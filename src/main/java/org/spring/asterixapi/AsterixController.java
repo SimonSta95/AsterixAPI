@@ -3,6 +3,7 @@ package org.spring.asterixapi;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,8 +17,52 @@ public class AsterixController {
     }
 
     @GetMapping("/characters")
-    public List<Character> getAllCharacters() {
-        return characterRepo.findAll();
+    public List<Character> getAllCharacters(@RequestParam(required = false) String id,
+                                            @RequestParam(required = false) String name,
+                                            @RequestParam(required = false) Integer age,
+                                            @RequestParam (required = false) String profession){
+
+        List<Character> characters = new ArrayList<>();
+        List<Character> allCharacters = characterRepo.findAll();
+
+        if (id != null) {
+            for (Character character : allCharacters) {
+                if (character.id().equals(id)) {
+                    characters.add(character);
+                }
+            }
+            return characters;
+        }
+
+        if (name != null) {
+            for (Character character : allCharacters) {
+                if (character.name().startsWith(name)) {
+                    characters.add(character);
+                }
+            }
+            return characters;
+        }
+
+        if (age != null) {
+            for (Character character : allCharacters) {
+                if (character.age() == age) {
+                    characters.add(character);
+                }
+            }
+            return characters;
+        }
+
+        if (profession != null) {
+            for (Character character : allCharacters) {
+                if (character.profession().equals(profession)) {
+                    characters.add(character);
+                }
+            }
+            return characters;
+        }
+
+        return allCharacters;
+
     }
 
     @PostMapping("/characters")
