@@ -1,14 +1,12 @@
 package org.spring.asterixapi;
 
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/asterix")
+@RequestMapping("/api/asterix")
 public class AsterixController {
 
     private final CharacterRepo characterRepo;
@@ -17,66 +15,38 @@ public class AsterixController {
         this.characterRepo = characterRepo;
     }
 
-    //GET
-    @GetMapping("/character")
-    public List<Character> getCharacters(
-            @RequestParam(required = false) String id,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String profession) {
-
-//        Query query = new Query();
-//        if (id != null) {
-//            query.addCriteria(Criteria.where("id").is(id));
-//            characterRepo.find(query)
-//            ;
-//        }
-//        if (name != null) {
-//            query.addCriteria(Criteria.where("name").is(name));
-//        }
-//        if (profession != null) {
-//            query.addCriteria(Criteria.where("profession").is(profession));
-//        }
-
-        return null;
+    @GetMapping("/characters")
+    public List<Character> getAllCharacters() {
+        return characterRepo.findAll();
     }
 
-    //CREATE
-    @PostMapping("/character")
+    @PostMapping("/characters")
     public String addCharacter(@RequestBody Character character) {
         characterRepo.save(character);
-
-        return "Character saved.";
+        return character.toString() + " added to Database";
     }
 
-    //UPDATE
-    @PutMapping("/character/update")
-    public String updateCharacter(@RequestBody Character character) {
-        if (characterRepo.existsById(character.id())) {
-            Character updateCharacter = characterRepo.findById(character.id()).get();
-            updateCharacter.withAge(character.age());
-            updateCharacter.withName(character.name());
-            updateCharacter.withProfession(character.profession());
-            characterRepo.save(updateCharacter);
-
-
-
-            return "Character updated";
+    @PutMapping("/characters")
+    public String updateCharacter(@RequestBody Character UpdateCharacter) {
+        List<Character> characters = characterRepo.findAll();
+        for (Character character : characters) {
+            if (character.id().equals(UpdateCharacter.id())) {
+                characterRepo.save(character);
+            }
         }
 
-        return "404 Character not found";
+        return UpdateCharacter.toString() + " updated to " + characterRepo.findAll().toString();
     }
 
-    //DELETE
-    @DeleteMapping("/character/{id}")
-    public String deleteCharacter(@PathVariable("id") String id) {
-        if (characterRepo.existsById(id)) {
-            characterRepo.deleteById(id);
-            return "Character deleted";
+    @DeleteMapping("/characters")
+    public String deleteCharacter(@RequestBody String characterId) {
+        List<Character> characters = characterRepo.findAll();
+        for (Character character : characters) {
+            if (character.id().equals(characterId)) {
+                characterRepo.delete(character);
+            }
         }
 
-        return "404 Character not found";
+        return characterRepo.findAll().toString() + " deleted from Database";
     }
-
-
 }
-
