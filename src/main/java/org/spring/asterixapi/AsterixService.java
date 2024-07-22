@@ -11,9 +11,11 @@ import java.util.UUID;
 public class AsterixService {
 
     private final CharacterRepo characterRepo;
+    private final IdService idService;
 
-    public AsterixService(CharacterRepo characterRepo){
+    public AsterixService(CharacterRepo characterRepo, IdService idService){
         this.characterRepo = characterRepo;
+        this.idService = idService;
     }
 
 
@@ -65,7 +67,8 @@ public class AsterixService {
 
     public Character addCharacter(CharacterPostDTO character) {
 
-        Character newCharacter = new Character(UUID.randomUUID().toString(),
+        Character newCharacter = new Character(
+                idService.generateId(),
                 character.name(),
                 character.age(),
                 character.profession());
@@ -81,14 +84,11 @@ public class AsterixService {
                 .withName(updateCharacter.name())
                 .withProfession(updateCharacter.profession());
 
-        characterRepo.save(character);
-        return character;
+        return characterRepo.save(character);
     }
 
-    public String deleteCharacterById(String id) {
-
+    public void deleteCharacterById(String id) {
 
         characterRepo.deleteById(id);
-        return "Character with id " + id + " deleted";
     }
 }
