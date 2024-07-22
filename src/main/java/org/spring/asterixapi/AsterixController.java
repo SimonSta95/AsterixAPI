@@ -19,35 +19,21 @@ public class AsterixController {
     public List<Character> getAllCharacters(@RequestParam(required = false) String id,
                                             @RequestParam(required = false) String name,
                                             @RequestParam(required = false) Integer age,
-                                            @RequestParam (required = false) String profession){
+                                            @RequestParam(required = false) String profession){
 
         return asterixService.getCharacters(id,name, age, profession);
-
     }
 
     @PostMapping("/characters")
-    public String addCharacter(@RequestBody Character character) {
-        CharacterPostDTO newCharacter = new CharacterPostDTO(character.name(), character.age(), character.profession());
-        return asterixService.addCharacter(newCharacter);
-    }
+    public Character addCharacter(@RequestBody CharacterPostDTO character) {
 
-
-    @PutMapping("/characters")
-    public String updateCharacter(@RequestBody Character UpdateCharacter) {
-
-        return asterixService.updateCharacter(UpdateCharacter);
+        return asterixService.addCharacter(character);
     }
 
     @PutMapping("/characters/{id}")
-    public String updateCharacterById(@RequestBody Character UpdateCharacter, @PathVariable String id) {
+    public Character updateCharacterById(@RequestBody Character UpdateCharacter, @PathVariable String id) {
 
         return asterixService.updateCharacterById(UpdateCharacter, id);
-    }
-
-    @DeleteMapping("/characters")
-    public String deleteCharacter(@RequestBody String characterId) {
-
-        return asterixService.deleteCharacter(characterId);
     }
 
     @DeleteMapping("/characters/{id}")

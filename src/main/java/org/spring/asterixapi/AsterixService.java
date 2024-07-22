@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -64,7 +63,7 @@ public class AsterixService {
         return allCharacters;
     }
 
-    public String addCharacter(CharacterPostDTO character) {
+    public Character addCharacter(CharacterPostDTO character) {
 
         Character newCharacter = new Character(UUID.randomUUID().toString(),
                 character.name(),
@@ -72,56 +71,24 @@ public class AsterixService {
                 character.profession());
 
         characterRepo.save(newCharacter);
-        return newCharacter.toString() + " added to Database";
+        return newCharacter;
     }
 
-    public String updateCharacter(Character UpdateCharacter) {
-        List<Character> characters = characterRepo.findAll();
-        for (Character character : characters) {
-            if (character.id().equals(UpdateCharacter.id())) {
+    public Character updateCharacterById(Character updateCharacter, String id) {
+        Character character = characterRepo.findById(id)
+                .orElseThrow()
+                .withAge(updateCharacter.age())
+                .withName(updateCharacter.name())
+                .withProfession(updateCharacter.profession());
 
-                if (UpdateCharacter.age() != 0) { character.withAge(UpdateCharacter.age());}
-                if (UpdateCharacter.name() != "") {character.withName(UpdateCharacter.name());}
-                if (UpdateCharacter.profession() != "") { character.withProfession(UpdateCharacter.profession());}
-
-                characterRepo.save(character);
-            }
-        }
-
-        return UpdateCharacter.toString() + " updated";
-    }
-
-    public String updateCharacterById(Character updateCharacter,String id) {
-        List<Character> characters = characterRepo.findAll();
-        for (Character character : characters) {
-            if (character.id().equals(id)) {
-
-                characterRepo.save(character);
-            }
-        }
-
-        return "Character with id " + id + " updated";
-    }
-
-    public String deleteCharacter(@RequestBody String characterId) {
-        List<Character> characters = characterRepo.findAll();
-        for (Character character : characters) {
-            if (character.id().equals(characterId)) {
-                characterRepo.delete(character);
-            }
-        }
-
-        return characterRepo.findAll().toString() + " deleted from Database";
+        characterRepo.save(character);
+        return character;
     }
 
     public String deleteCharacterById(String id) {
-        List<Character> characters = characterRepo.findAll();
-        for (Character character : characters) {
-            if (character.id().equals(id)) {
-                characterRepo.delete(character);
-            }
-        }
 
+
+        characterRepo.deleteById(id);
         return "Character with id " + id + " deleted";
     }
 }
