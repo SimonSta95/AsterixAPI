@@ -4,11 +4,9 @@ import lombok.With;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("characters")
+@With
 public record Character(String id,
-                        @With
                         String name,
-                        @With
                         int age,
-                        @With
                         String profession) {
 }
