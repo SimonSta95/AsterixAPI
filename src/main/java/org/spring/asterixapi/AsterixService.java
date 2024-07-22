@@ -73,8 +73,8 @@ public class AsterixService {
                 character.age(),
                 character.profession());
 
-        characterRepo.save(newCharacter);
-        return newCharacter;
+        return characterRepo.save(newCharacter);
+
     }
 
     public Character updateCharacterById(Character updateCharacter, String id) {
