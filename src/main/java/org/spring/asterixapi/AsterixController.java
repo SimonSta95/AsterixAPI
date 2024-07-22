@@ -21,7 +21,7 @@ public class AsterixController {
                                             @RequestParam(required = false) Integer age,
                                             @RequestParam (required = false) String profession){
 
-        return asterixService.getCharacters(id,name, String.valueOf(age),profession);
+        return asterixService.getCharacters(id,name, age, profession);
 
     }
 

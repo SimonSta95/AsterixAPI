@@ -18,7 +18,7 @@ public class AsterixService {
 
     public List<Character> getCharacters(String id,
                                          String name,
-                                         String age,
+                                         Integer age,
                                          String profession){
         List<Character> characters = new ArrayList<>();
         List<Character> allCharacters = characterRepo.findAll();
@@ -43,7 +43,7 @@ public class AsterixService {
 
         if (age != null) {
             for (Character character : allCharacters) {
-                if (character.age() == Integer.parseInt(age)) {
+                if (character.age() == age) {
                     characters.add(character);
                 }
             }
