@@ -27,7 +27,8 @@ public class AsterixController {
 
     @PostMapping("/characters")
     public String addCharacter(@RequestBody Character character) {
-        return asterixService.addCharacter(character);
+        CharacterPostDTO newCharacter = new CharacterPostDTO(character.name(), character.age(), character.profession());
+        return asterixService.addCharacter(newCharacter);
     }
 
 
@@ -37,9 +38,21 @@ public class AsterixController {
         return asterixService.updateCharacter(UpdateCharacter);
     }
 
+    @PutMapping("/characters/{id}")
+    public String updateCharacterById(@RequestBody Character UpdateCharacter, @PathVariable String id) {
+
+        return asterixService.updateCharacterById(UpdateCharacter, id);
+    }
+
     @DeleteMapping("/characters")
     public String deleteCharacter(@RequestBody String characterId) {
 
         return asterixService.deleteCharacter(characterId);
+    }
+
+    @DeleteMapping("/characters/{id}")
+    public String deleteCharacterById(@PathVariable String id) {
+
+        return asterixService.deleteCharacterById(id);
     }
 }
