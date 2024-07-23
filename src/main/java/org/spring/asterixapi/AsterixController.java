@@ -1,6 +1,5 @@
 package org.spring.asterixapi;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
