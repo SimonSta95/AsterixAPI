@@ -13,7 +13,7 @@ public class AsterixService {
     private final CharacterRepo characterRepo;
     private final IdService idService;
 
-    public AsterixService(CharacterRepo characterRepo, IdService idService){
+    public AsterixService(CharacterRepo characterRepo, IdService idService) {
         this.characterRepo = characterRepo;
         this.idService = idService;
     }
@@ -22,7 +22,7 @@ public class AsterixService {
     public List<Character> getCharacters(String id,
                                          String name,
                                          Integer age,
-                                         String profession){
+                                         String profession) {
         List<Character> characters = new ArrayList<>();
         List<Character> allCharacters = characterRepo.findAll();
 

@@ -19,9 +19,9 @@ public class AsterixController {
     public List<Character> getAllCharacters(@RequestParam(required = false) String id,
                                             @RequestParam(required = false) String name,
                                             @RequestParam(required = false) Integer age,
-                                            @RequestParam(required = false) String profession){
+                                            @RequestParam(required = false) String profession) {
 
-        return asterixService.getCharacters(id,name, age, profession);
+        return asterixService.getCharacters(id, name, age, profession);
     }
 
     @PostMapping("/characters")
